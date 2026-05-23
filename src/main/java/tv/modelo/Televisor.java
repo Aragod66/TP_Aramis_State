@@ -12,6 +12,10 @@ public class Televisor extends Observado {
         this.volumenActual = 10;
     }
 
+    public String estado() {
+        return this.estado.toString();
+    }
+
     public int volumenActual() {
         return this.volumenActual;
     }

@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class TvUI extends JFrame implements Observer {
     static final String LABEL_TV_APAGADA = "TV APAGADA";
-    static final String LABEL_TV_ENCENDIDA = "TV ENCENDIDA";
     static final String LABEL_CANAL = "Canal ";
     static final String LABEL_VOLUMEN = "Volumen ";
     private final Televisor televisor;
@@ -42,10 +41,8 @@ public class TvUI extends JFrame implements Observer {
         setSize(420, 260);
         setLocation(120, 120);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        actualizarVistaBase(LABEL_TV_APAGADA);
 
         mensajesEventos.put(TelevisorEvento.ENCENDIDO, () -> {
-            actualizarVistaBase(LABEL_TV_ENCENDIDA);
             mostrarMensajeTemporal(LABEL_CANAL + televisor.canalActual());
         });
 
@@ -54,12 +51,10 @@ public class TvUI extends JFrame implements Observer {
         });
 
         mensajesEventos.put(TelevisorEvento.CANAL, () -> {
-            actualizarVistaBase("");
             mostrarMensajeTemporal(LABEL_CANAL + televisor.canalActual());
         });
 
         mensajesEventos.put(TelevisorEvento.VOLUMEN, () -> {
-            actualizarVistaBase("");
             mostrarMensajeTemporal(LABEL_VOLUMEN + televisor.volumenActual());
         });
     }
@@ -79,7 +74,7 @@ public class TvUI extends JFrame implements Observer {
         if (mensajeTemporal != null && mensajeTemporal.isRunning()) {
             mensajeTemporal.stop();
         }
-        mensajeTemporal = new Timer(2000, e -> actualizarVistaBase(LABEL_TV_ENCENDIDA));
+        mensajeTemporal = new Timer(2000, e -> actualizarVistaBase(televisor.estado()));
         mensajeTemporal.setRepeats(false);
         mensajeTemporal.start();
     }
