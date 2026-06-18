@@ -1,53 +1,69 @@
 package ejercicios.dos;
 
 public class Calculadora {
-    static final double VALOR_INICIAL = 0.0;
-    static final String MSG_ESTADO_ERROR = "La calculadora está en estado de error";
+
+    public static final double VALOR_INICIAL = 0.0;
+    public static final String MSG_ESTADO_ERROR =
+            "La calculadora está en estado de error";
+
     private double valorAcumulado;
     private EstadoCalculadora estado;
+    private Operacion operacionPendiente;
 
     public Calculadora() {
-        this.estado = EstadoCalculadora.INICIAL;
         this.valorAcumulado = VALOR_INICIAL;
-    }
-
-    String estado() {
-        return this.estado.name();
+        this.estado = new EstadoInicial();
     }
 
     public void mas() {
-        if (estado == EstadoCalculadora.INICIAL) {
-            this.estado = EstadoCalculadora.ESPERANDO_OPERANDO;
-        } else if (estado == EstadoCalculadora.ESPERANDO_OPERANDO) {
-            this.estado = EstadoCalculadora.ERROR;
-        } else if (estado == EstadoCalculadora.ERROR) {
-            System.out.println(MSG_ESTADO_ERROR);
-        }
+        estado.mas(this);
     }
 
-    public void borrar() {
-        this.estado = EstadoCalculadora.INICIAL;
-        this.valorAcumulado = VALOR_INICIAL;
+    public void menos() {
+        estado.menos(this);
+    }
+
+    public void por() {
+        estado.por(this);
+    }
+
+    public void dividido() {
+        estado.dividido(this);
     }
 
     public void valor(double valor) {
-        if (estado == EstadoCalculadora.INICIAL) {
-            this.valorAcumulado = valor;
-        } else if (estado == EstadoCalculadora.ESPERANDO_OPERANDO) {
-            this.valorAcumulado += valor;
-            this.estado = EstadoCalculadora.INICIAL;
-        } else if (estado == EstadoCalculadora.ERROR) {
-            System.out.println(MSG_ESTADO_ERROR);
-        }
+        estado.valor(this, valor);
     }
 
     public void mostrar() {
-        if (estado == EstadoCalculadora.INICIAL) {
-            System.out.println(this.valorAcumulado);
-        } else if (estado == EstadoCalculadora.ESPERANDO_OPERANDO) {
-            this.estado = EstadoCalculadora.ERROR;
-        } else {
-            System.out.println(MSG_ESTADO_ERROR);
-        }
+        estado.mostrar(this);
+    }
+
+    public void borrar() {
+        estado.borrar(this);
+    }
+
+    public String estado() {
+        return estado.nombre();
+    }
+
+    public double getValorAcumulado() {
+        return valorAcumulado;
+    }
+
+    public void setValorAcumulado(double valorAcumulado) {
+        this.valorAcumulado = valorAcumulado;
+    }
+
+    public Operacion getOperacionPendiente() {
+        return operacionPendiente;
+    }
+
+    public void setOperacionPendiente(Operacion operacionPendiente) {
+        this.operacionPendiente = operacionPendiente;
+    }
+
+    void setEstado(EstadoCalculadora estado) {
+        this.estado = estado;
     }
 }

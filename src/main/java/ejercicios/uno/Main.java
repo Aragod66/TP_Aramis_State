@@ -1,7 +1,9 @@
 package ejercicios.uno;
 
 public class Main {
-    static void main() {
+
+    public static void main(String[] args) {
+
         Puerta puerta = new Puerta();
 
         System.out.println("Estado inicial: " + puerta.estado());
